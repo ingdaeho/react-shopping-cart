@@ -6,6 +6,11 @@ import { routeTree } from './routeTree.gen';
 
 export const queryClient = new QueryClient();
 
+if (import.meta.env.DEV) {
+  const { worker } = await import('./mocks/browser.ts');
+  worker.start();
+}
+
 const router = createRouter({ routeTree });
 
 declare module '@tanstack/react-router' {
