@@ -3,7 +3,7 @@ import fetcher from '../../lib/axios';
 import { Product } from '../products/-queryOptions';
 import { queryClient } from '../../main';
 
-export interface Cart extends Product {
+export interface Cart {
   id: number;
   product: Product;
 }
