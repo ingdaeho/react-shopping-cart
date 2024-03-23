@@ -2,10 +2,13 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import Button from '../../components/Button/Button';
-import NumberInput from '../../components/NumberInput/NumberInput';
-import { cartItemQueryOptions } from './-queryOptions';
+import {
+  cartItemQueryOptions,
+  useDeleteCartItemMutation,
+} from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
+import CartItemCard from './-components/CartItemCard';
 
 export const Route = createFileRoute('/cart/')({
   component: Cart,
@@ -15,11 +18,11 @@ export const Route = createFileRoute('/cart/')({
 
 function Cart() {
   const { data } = useSuspenseQuery(cartItemQueryOptions());
+  const deleteCartItem = useDeleteCartItemMutation();
 
   return (
     <section className='cart-section'>
       <PageTitle>장바구니</PageTitle>
-
       <div className='flex'>
         <section className='cart-left-section'>
           <div className='flex justify-between items-center'>
@@ -30,41 +33,13 @@ function Cart() {
           </div>
           <h3 className='cart-title'>든든배송 상품({data.length}개)</h3>
           <hr className='divide-line-gray mt-10' />
-          {data.map(({ id, product }) => {
-            return (
-              <div key={id}>
-                <div className='cart-container'>
-                  <div className='flex gap-15 mt-10'>
-                    <input
-                      className='checkbox'
-                      name='checkbox'
-                      type='checkbox'
-                      checked={true}
-                      onChange={() => {}}
-                    />
-                    <img
-                      className='w-144 h-144'
-                      src={product.imageUrl}
-                      alt={product.name}
-                    />
-                    <span className='cart-name'>{product.name}</span>
-                  </div>
-                  <div className='flex-col-center justify-end gap-15'>
-                    <img
-                      className='cart-trash-svg'
-                      src='./assets/svgs/trash.svg'
-                      alt='삭제'
-                    />
-                    <NumberInput value={1} setValue={() => {}} />
-                    <span className='cart-price'>
-                      {product.price.toLocaleString()}원
-                    </span>
-                  </div>
-                </div>
-                <hr className='divide-line-thin mt-10' />
-              </div>
-            );
-          })}
+          {data.map((cartItem) => (
+            <CartItemCard
+              item={cartItem}
+              key={cartItem.id}
+              deleteItem={deleteCartItem}
+            />
+          ))}
         </section>
         <section className='cart-right-section'>
           <div className='cart-right-section__top'>

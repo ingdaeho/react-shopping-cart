@@ -19,7 +19,7 @@ function Order() {
 
       {data.map((order) => {
         return (
-          <div className='order-list'>
+          <div className='order-list' key={order.id}>
             <div className='order-list__header'>
               <span>주문번호: {order.id}</span>
               <span

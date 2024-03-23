@@ -9,40 +9,34 @@ export interface Product {
   imageUrl: string;
 }
 
-const fetchProductList = async () => {
-  const { data } = await fetcher.get<Product[]>('/products');
-
-  return data;
-};
-
 export const productListQueryOptions = () =>
   queryOptions({
     queryKey: ['products'],
-    queryFn: fetchProductList,
+    queryFn: async () => {
+      const { data } = await fetcher.get<Product[]>('/products');
+      return data;
+    },
   });
-
-const fetchProduct = async (productId: string) => {
-  const { data } = await fetcher.get<Product>(`/products/${productId}`);
-
-  return data;
-};
 
 export const productQueryOptions = (productId: string) =>
   queryOptions({
     queryKey: ['products', productId],
-    queryFn: () => fetchProduct(productId),
+    queryFn: async () => {
+      const { data } = await fetcher.get<Product>(`/products/${productId}`);
+      return data;
+    },
   });
 
-export const postProduct = async (product: Product) => {
-  const { data } = await fetcher.post('/products', product);
-
-  return data;
-};
-
-export const useAddToCartMutation = (product: Product) => {
+export const useAddToCartMutation = () => {
   return useMutation({
-    mutationKey: ['products', product.id],
-    mutationFn: postProduct,
-    onSuccess: () => queryClient.invalidateQueries(),
+    mutationFn: async (product: Product) => {
+      const { data } = await fetcher.post('/carts', { product });
+      return data;
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ['carts'],
+        refetchType: 'all',
+      }),
   });
 };

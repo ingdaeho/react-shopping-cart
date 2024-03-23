@@ -6,7 +6,7 @@ interface Props {
 }
 
 const ProductCard = ({ product, onClick }: Props) => {
-  const { mutate } = useAddToCartMutation(product);
+  const { mutate } = useAddToCartMutation();
   const { name, price, imageUrl } = product;
   return (
     <div>
