@@ -1,23 +1,39 @@
-import { ComponentPropsWithoutRef, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   numberInputContainer,
   numberInput,
   numberInputButton,
 } from './NumberInput.css';
 
-interface Props extends ComponentPropsWithoutRef<'input'> {
+interface Props {
   value: number;
-  setValue: Dispatch<SetStateAction<number>>;
+  onChange: (value: number) => void;
 }
 
-const NumberInput = ({ value = 1, setValue }: Props) => {
+const NumberInput = ({ value, onChange }: Props) => {
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseInt(event.target.value, 10);
+    setInputValue(newValue);
+    onChange(newValue);
+  };
+
   const handlePlus = () => {
-    setValue((prev) => prev + 1);
+    const newValue = inputValue + 1;
+    setInputValue(newValue);
+    onChange(newValue);
   };
 
   const handleMinus = () => {
-    if (value <= 0) return;
-    setValue((prev) => prev - 1);
+    const newValue = inputValue - 1;
+    if (newValue <= 0) return;
+    setInputValue(newValue);
+    onChange(newValue);
   };
 
   return (
@@ -25,8 +41,8 @@ const NumberInput = ({ value = 1, setValue }: Props) => {
       <input
         type='number'
         className={numberInput}
-        value={value}
-        onChange={() => {}}
+        value={inputValue}
+        onChange={handleChange}
       />
       <div>
         <button className={numberInputButton} onClick={handlePlus}>
