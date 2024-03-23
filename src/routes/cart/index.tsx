@@ -4,16 +4,14 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import Button from '../../components/Button/Button';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import { cartItemQueryOptions } from './-queryOptions';
+import PageTitle from '../../components/PageTitle/PageTitle';
 
 export const Cart = () => {
   const { data } = useSuspenseQuery(cartItemQueryOptions());
 
   return (
     <section className='cart-section'>
-      <header className='flex-col-center mt-20'>
-        <h2 className='cart-section__title'>장바구니</h2>
-        <hr className='divide-line mt-20' />
-      </header>
+      <PageTitle>장바구니</PageTitle>
 
       <div className='flex'>
         <section className='cart-left-section'>

@@ -2,11 +2,6 @@
   padding: 24px 300px;
 }
 
-.order-section__title {
-  font-size: 24px;
-  font-weight: 600;
-}
-
 .order-container {
   display: flex;
   justify-content: space-between;
@@ -77,6 +72,8 @@
   padding: 20px 40px;
 
   border: 1px solid #aaaaaa;
+
+  cursor: pointer;
 }
 
 .order-detail-container {

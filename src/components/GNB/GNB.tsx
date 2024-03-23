@@ -17,7 +17,7 @@ export default function GNB() {
         </button>
         <button
           className={navButton}
-          onClick={() => navigate({ to: '/orderList' })}
+          onClick={() => navigate({ to: '/order' })}
         >
           주문목록
         </button>

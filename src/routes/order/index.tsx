@@ -1,23 +1,32 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import Button from '../../components/Button/Button';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { orderListQueryOptions } from './-queryOptions';
+import PageTitle from '../../components/PageTitle/PageTitle';
 
 export const Order = () => {
+  const navigate = useNavigate();
   const { data } = useSuspenseQuery(orderListQueryOptions());
   return (
     <section className='order-section'>
-      <header className='flex-col-center mt-20'>
-        <h2 className='order-section__title'>주문 목록</h2>
-        <hr className='divide-line mt-20' />
-      </header>
+      <PageTitle>주문 목록</PageTitle>
 
       {data.map((order) => {
         return (
           <div className='order-list'>
             <div className='order-list__header'>
               <span>주문번호: {order.id}</span>
-              <span>상세보기 {'>'}</span>
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() =>
+                  navigate({
+                    to: '/order/$orderId',
+                    params: { orderId: order.id.toString() },
+                  })
+                }
+              >
+                상세보기 {'>'}
+              </span>
             </div>
             {order.orderDetails.map(
               ({ id, name, price, quantity, imageUrl }) => {

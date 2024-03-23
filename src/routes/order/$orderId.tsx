@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { orderQueryOptions } from './-queryOptions';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Button from '../../components/Button/Button';
+import PageTitle from '../../components/PageTitle/PageTitle';
 
 export const OrderDetail = () => {
   const { orderId } = Route.useParams();
@@ -12,15 +13,10 @@ export const OrderDetail = () => {
 
   return (
     <section className='order-section'>
-      <header className='flex-col-center mt-20'>
-        <h2 className='order-section__title'>주문내역상세</h2>
-        <hr className='divide-line mt-20' />
-      </header>
-
+      <PageTitle>주문내역상세</PageTitle>
       <div className='order-list'>
         <div className='order-list__header'>
           <span>주문번호: {id}</span>
-          <span>상세보기 {'>'}</span>
         </div>
         {orderDetails.map(({ id, name, price, imageUrl }) => {
           return (
