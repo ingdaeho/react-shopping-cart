@@ -4,7 +4,13 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { orderListQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 
-export const Order = () => {
+export const Route = createFileRoute('/order/')({
+  component: Order,
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(orderListQueryOptions()),
+});
+
+function Order() {
   const navigate = useNavigate();
   const { data } = useSuspenseQuery(orderListQueryOptions());
   return (
@@ -58,10 +64,4 @@ export const Order = () => {
       })}
     </section>
   );
-};
-
-export const Route = createFileRoute('/order/')({
-  component: Order,
-  loader: ({ context }) =>
-    context.queryClient.ensureQueryData(orderListQueryOptions()),
-});
+}

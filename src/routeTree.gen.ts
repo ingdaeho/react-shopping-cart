@@ -11,7 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ProductsIndexImport } from './routes/products/index'
+import { Route as IndexImport } from './routes/index'
 import { Route as OrderIndexImport } from './routes/order/index'
 import { Route as CartIndexImport } from './routes/cart/index'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
@@ -19,8 +19,8 @@ import { Route as OrderOrderIdImport } from './routes/order/$orderId'
 
 // Create/Update Routes
 
-const ProductsIndexRoute = ProductsIndexImport.update({
-  path: '/products/',
+const IndexRoute = IndexImport.update({
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -48,6 +48,10 @@ const OrderOrderIdRoute = OrderOrderIdImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/order/$orderId': {
       preLoaderRoute: typeof OrderOrderIdImport
       parentRoute: typeof rootRoute
@@ -64,21 +68,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderIndexImport
       parentRoute: typeof rootRoute
     }
-    '/products/': {
-      preLoaderRoute: typeof ProductsIndexImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
+  IndexRoute,
   OrderOrderIdRoute,
   ProductsProductIdRoute,
   CartIndexRoute,
   OrderIndexRoute,
-  ProductsIndexRoute,
 ])
 
 /* prettier-ignore-end */

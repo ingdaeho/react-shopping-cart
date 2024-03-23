@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import ProductCard from './-components/ProductCard';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { productListQueryOptions } from './-queryOptions';
+import { productListQueryOptions } from './products/-queryOptions';
+import ProductCard from './products/-components/ProductCard';
 
 export const ProductList = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const ProductList = () => {
   );
 };
 
-export const Route = createFileRoute('/products/')({
+export const Route = createFileRoute('/')({
   component: ProductList,
   loader: (opts) =>
     opts.context.queryClient.ensureQueryData(productListQueryOptions()),

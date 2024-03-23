@@ -7,7 +7,7 @@ export default function GNB() {
   return (
     <nav className={classNames(nav, 'flex', 'justify-around')}>
       <div className='flex-center'>
-        <h1 className={navTitle} onClick={() => navigate({ to: '/products' })}>
+        <h1 className={navTitle} onClick={() => navigate({ to: '/' })}>
           CLEAN CODE SHOP
         </h1>
       </div>

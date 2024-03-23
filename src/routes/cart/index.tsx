@@ -7,7 +7,13 @@ import { cartItemQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
 
-export const Cart = () => {
+export const Route = createFileRoute('/cart/')({
+  component: Cart,
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(cartItemQueryOptions()),
+});
+
+function Cart() {
   const { data } = useSuspenseQuery(cartItemQueryOptions());
 
   return (
@@ -84,10 +90,4 @@ export const Cart = () => {
       </div>
     </section>
   );
-};
-
-export const Route = createFileRoute('/cart/')({
-  component: Cart,
-  loader: ({ context }) =>
-    context.queryClient.ensureQueryData(cartItemQueryOptions()),
-});
+}

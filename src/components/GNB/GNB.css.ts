@@ -13,10 +13,12 @@ export const navTitle = style({
   textAlign: 'center',
   verticalAlign: 'middle',
   color: '#ffffff',
+  cursor: 'pointer',
 });
 
 export const navButton = style({
   fontWeight: 500,
   fontSize: 24,
   color: '#ffffff',
+  cursor: 'pointer',
 });
