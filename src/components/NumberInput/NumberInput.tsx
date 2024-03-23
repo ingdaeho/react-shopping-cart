@@ -10,7 +10,7 @@ interface Props extends ComponentPropsWithoutRef<'input'> {
   setValue: Dispatch<SetStateAction<number>>;
 }
 
-const NumberInput = ({ value, setValue }: Props) => {
+const NumberInput = ({ value = 1, setValue }: Props) => {
   const handlePlus = () => {
     setValue((prev) => prev + 1);
   };
@@ -22,7 +22,12 @@ const NumberInput = ({ value, setValue }: Props) => {
 
   return (
     <div className={numberInputContainer}>
-      <input type='number' className={numberInput} value={value} />
+      <input
+        type='number'
+        className={numberInput}
+        value={value}
+        onChange={() => {}}
+      />
       <div>
         <button className={numberInputButton} onClick={handlePlus}>
           ▲

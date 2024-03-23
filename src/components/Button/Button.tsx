@@ -12,14 +12,18 @@ const Button = ({
   variant = 'contained',
   size = 'medium',
   color = 'primary',
+  className,
   children,
   onClick,
   ...props
 }: PropsWithChildren<Props>) => {
-  const buttonClass = classNames({
-    [contained({ size, color })]: variant === 'contained',
-    [outlined({ size })]: variant === 'outlined',
-  });
+  const buttonClass = classNames(
+    {
+      [contained({ size, color })]: variant === 'contained',
+      [outlined({ size })]: variant === 'outlined',
+    },
+    className
+  );
 
   return (
     <button type='button' className={buttonClass} {...props} onClick={onClick}>

@@ -11,17 +11,74 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ProductsIndexImport } from './routes/products/index'
+import { Route as OrderIndexImport } from './routes/order/index'
+import { Route as CartIndexImport } from './routes/cart/index'
+import { Route as ProductsProductIdImport } from './routes/products/$productId'
+import { Route as OrderOrderIdImport } from './routes/order/$orderId'
 
 // Create/Update Routes
+
+const ProductsIndexRoute = ProductsIndexImport.update({
+  path: '/products/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OrderIndexRoute = OrderIndexImport.update({
+  path: '/order/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CartIndexRoute = CartIndexImport.update({
+  path: '/cart/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsProductIdRoute = ProductsProductIdImport.update({
+  path: '/products/$productId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OrderOrderIdRoute = OrderOrderIdImport.update({
+  path: '/order/$orderId',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+  interface FileRoutesByPath {
+    '/order/$orderId': {
+      preLoaderRoute: typeof OrderOrderIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/products/$productId': {
+      preLoaderRoute: typeof ProductsProductIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/cart/': {
+      preLoaderRoute: typeof CartIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/order/': {
+      preLoaderRoute: typeof OrderIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/products/': {
+      preLoaderRoute: typeof ProductsIndexImport
+      parentRoute: typeof rootRoute
+    }
+  }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([])
+export const routeTree = rootRoute.addChildren([
+  OrderOrderIdRoute,
+  ProductsProductIdRoute,
+  CartIndexRoute,
+  OrderIndexRoute,
+  ProductsIndexRoute,
+])
 
 /* prettier-ignore-end */

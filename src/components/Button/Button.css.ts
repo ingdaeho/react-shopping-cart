@@ -3,7 +3,7 @@ import { recipe } from '@vanilla-extract/recipes';
 export const contained = recipe({
   base: {
     color: 'white',
-    width: '100%',
+    cursor: 'pointer',
   },
   variants: {
     color: {
@@ -20,6 +20,7 @@ export const contained = recipe({
         padding: '14px 28px',
       },
       medium: {
+        width: '100%',
         fontSize: 24,
         padding: 20,
       },
@@ -34,9 +35,7 @@ export const outlined = recipe({
   },
   variants: {
     size: {
-      small: {
-        fontSize: 20,
-      },
+      small: {},
       medium: {
         fontSize: 24,
       },
