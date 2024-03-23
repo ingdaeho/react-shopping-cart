@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import { cartItemQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
+import HighlightText from '../../components/HighlightText/HighlightText';
 
 export const Cart = () => {
   const { data } = useSuspenseQuery(cartItemQueryOptions());
@@ -66,8 +67,8 @@ export const Cart = () => {
           <hr className='divide-line-thin' />
           <div className='cart-right-section__bottom'>
             <div className='flex justify-between p-20 mt-20'>
-              <span className='highlight-text'>결제예상금액</span>
-              <span className='highlight-text'>21,800원</span>
+              <HighlightText>결제예상금액</HighlightText>
+              <HighlightText>21,800원</HighlightText>
             </div>
             <div className='flex-center mt-30 mx-10'>
               <Button

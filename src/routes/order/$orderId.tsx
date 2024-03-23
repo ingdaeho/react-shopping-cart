@@ -3,6 +3,7 @@ import { orderQueryOptions } from './-queryOptions';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Button from '../../components/Button/Button';
 import PageTitle from '../../components/PageTitle/PageTitle';
+import HighlightText from '../../components/HighlightText/HighlightText';
 
 export const OrderDetail = () => {
   const { orderId } = Route.useParams();
@@ -48,10 +49,8 @@ export const OrderDetail = () => {
           <span className='order-detail-title'>결제금액 정보</span>
           <hr className='divide-line-thin my-20' />
           <div className='flex justify-between'>
-            <span className='highlight-text'>총 결제금액</span>
-            <span className='highlight-text'>
-              {totalPrice.toLocaleString()}원
-            </span>
+            <HighlightText>총 결제금액</HighlightText>
+            <HighlightText>{totalPrice.toLocaleString()}원</HighlightText>
           </div>
         </div>
       </div>
