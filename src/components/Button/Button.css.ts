@@ -32,6 +32,7 @@ export const outlined = recipe({
   base: {
     border: '1px solid #bbbbbb',
     padding: '12px 22px',
+    cursor: 'pointer',
   },
   variants: {
     size: {
