@@ -1,4 +1,5 @@
 import { Product, useAddToCartMutation } from '../-queryOptions';
+import CartIcon from '../../../assets/svgs/cart.svg?react';
 
 interface Props {
   product: Product;
@@ -18,9 +19,8 @@ const ProductCard = ({ product, onClick }: Props) => {
             {price.toLocaleString()}원
           </span>
         </div>
-        <img
-          src='assets/svgs/cart.svg'
-          alt='장바구니'
+        <CartIcon
+          style={{ cursor: 'pointer' }}
           onClick={() => mutate(product)}
         />
       </div>

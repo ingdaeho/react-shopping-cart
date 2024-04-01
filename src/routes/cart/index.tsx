@@ -11,12 +11,7 @@ import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
 import { useSelectItems } from './-hooks/useSelectItems';
 import NumberInput from '../../components/NumberInput/NumberInput';
-
-export const Route = createFileRoute('/cart/')({
-  component: Cart,
-  loader: ({ context }) =>
-    context.queryClient.ensureQueryData(cartItemQueryOptions()),
-});
+import TrashIcon from '../../assets/svgs/trash.svg?react';
 
 function Cart() {
   const { data } = useSuspenseQuery(cartItemQueryOptions());
@@ -26,7 +21,7 @@ function Cart() {
   const {
     isAllSelected,
     selectedItems,
-    toggleOrderSelection,
+    toggleItemSelection,
     toggleAllItemsSelection,
   } = useSelectItems(cartItems);
 
@@ -76,16 +71,14 @@ function Cart() {
                   <div className='flex gap-15 mt-10'>
                     <Checkbox
                       checked={!!selectedItems[cartItem.id]}
-                      onChange={() => toggleOrderSelection(cartItem.id)}
+                      onChange={() => toggleItemSelection(cartItem.id)}
                     />
                     <img className='w-144 h-144' src={imageUrl} alt={name} />
                     <span className='cart-name'>{name}</span>
                   </div>
                   <div className='flex-col-center justify-end gap-15'>
-                    <img
+                    <TrashIcon
                       className='cart-trash-svg'
-                      src='./assets/svgs/trash.svg'
-                      alt='삭제'
                       onClick={() => deleteCartItem.mutate(cartItem.id)}
                     />
                     <NumberInput
@@ -130,3 +123,9 @@ function Cart() {
     </section>
   );
 }
+
+export const Route = createFileRoute('/cart/')({
+  component: Cart,
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(cartItemQueryOptions()),
+});
