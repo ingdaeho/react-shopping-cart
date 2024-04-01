@@ -13,6 +13,6 @@ type Story = StoryObj<typeof meta>;
 export const DefaultNumberInput: Story = {
   render: () => {
     const [value, setValue] = useState(1);
-    return <NumberInput value={value} setValue={setValue} />;
+    return <NumberInput value={value} onChange={setValue} />;
   },
 };
