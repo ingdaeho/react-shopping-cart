@@ -1,14 +1,17 @@
+import { Dispatch, SetStateAction } from 'react';
 import { Product, useAddToCartMutation } from '../-queryOptions';
 import CartIcon from '../../../assets/svgs/cart.svg?react';
 
 interface Props {
   product: Product;
   onClick: () => void;
+  setShowSnackBar: Dispatch<SetStateAction<boolean>>;
 }
 
-const ProductCard = ({ product, onClick }: Props) => {
+const ProductCard = ({ product, onClick, setShowSnackBar }: Props) => {
   const { mutate } = useAddToCartMutation();
   const { name, price, imageUrl } = product;
+
   return (
     <div>
       <img src={imageUrl} alt={name} onClick={onClick} />
@@ -21,7 +24,11 @@ const ProductCard = ({ product, onClick }: Props) => {
         </div>
         <CartIcon
           style={{ cursor: 'pointer' }}
-          onClick={() => mutate(product)}
+          onClick={() =>
+            mutate(product, {
+              onSuccess: () => setShowSnackBar(true),
+            })
+          }
         />
       </div>
     </div>
