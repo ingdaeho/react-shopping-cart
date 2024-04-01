@@ -2,11 +2,9 @@ import { http, delay, HttpResponse } from 'msw';
 import { Order } from '../../routes/order/-queryOptions';
 
 export const handlers = [
-  http.all('*', async () => {
-    await delay(1000);
-  }),
+  http.all('*', async () => await delay()),
 
-  http.get(__API_URL__ + '/orders', () => {
+  http.get('/orders', () => {
     return HttpResponse.json([
       {
         id: 1,
@@ -32,7 +30,7 @@ export const handlers = [
     ]);
   }),
 
-  http.post<object, Order>(__API_URL__ + '/orders', async ({ request }) => {
+  http.post<object, Order>('/orders', async ({ request }) => {
     const body = await request.json();
     const { orderDetails } = body;
 

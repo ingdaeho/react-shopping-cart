@@ -2,11 +2,9 @@ import { http, delay, HttpResponse } from 'msw';
 import { Product } from '../../routes/products/-queryOptions';
 
 export const handlers = [
-  http.all('*', async () => {
-    await delay(1000);
-  }),
+  http.all('*', async () => await delay()),
 
-  http.get(__API_URL__ + '/carts', () => {
+  http.get('/carts', () => {
     return HttpResponse.json([
       {
         id: 1675351764224,
@@ -81,9 +79,9 @@ export const handlers = [
     ]);
   }),
 
-  http.post<object, Product>(__API_URL__ + '/carts', async ({ request }) => {
+  http.post<object, { product: Product }>('/carts', async ({ request }) => {
     const body = await request.json();
-    const { price, name, imageUrl } = body;
+    const { price, name, imageUrl } = body.product;
 
     if (
       !Number.isInteger(price) ||
@@ -94,5 +92,9 @@ export const handlers = [
     } else {
       return new HttpResponse('', { status: 201 });
     }
+  }),
+
+  http.delete('/carts/:id', async () => {
+    return new HttpResponse('delete success', { status: 200 });
   }),
 ];
