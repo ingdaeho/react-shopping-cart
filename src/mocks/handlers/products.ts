@@ -29,7 +29,7 @@ export const handlers = [
     ]);
   }),
 
-  http.get('/products/1', () => {
+  http.get('/products/:productId', () => {
     return HttpResponse.json({
       id: 1,
       name: '냉면용기(대)',
