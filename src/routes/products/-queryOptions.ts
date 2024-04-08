@@ -1,12 +1,17 @@
-import { queryOptions, useMutation } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import fetcher from '../../lib/axios';
-import { queryClient } from '../../main';
+import { cartItemQueryOptions } from '../cart/-queryOptions';
 
 export interface Product {
   id: number;
   name: string;
   price: number;
   imageUrl: string;
+  quantity?: number;
 }
 
 export const productListQueryOptions = () =>
@@ -28,15 +33,38 @@ export const productQueryOptions = (productId: string) =>
   });
 
 export const useAddToCartMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (product: Product) => {
       const { data } = await fetcher.post('/carts', { product });
       return data;
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: ['carts'],
-        refetchType: 'all',
-      }),
+    onMutate: async (product) => {
+      await queryClient.cancelQueries(cartItemQueryOptions());
+      const previousCartItemCount = queryClient.getQueryData(
+        cartItemQueryOptions().queryKey
+      );
+
+      if (previousCartItemCount) {
+        queryClient.setQueryData(cartItemQueryOptions().queryKey, [
+          ...previousCartItemCount,
+          { id: Math.random(), product },
+        ]);
+      }
+
+      return { previousCartItemCount };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCartItemCount) {
+        queryClient.setQueryData(
+          cartItemQueryOptions().queryKey,
+          context.previousCartItemCount
+        );
+      }
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries(cartItemQueryOptions());
+    },
   });
 };

@@ -5,6 +5,7 @@ export const nav = style({
   height: 80,
   background: '#2ac1bc',
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.3)',
+  alignItems: 'center',
 });
 
 export const navTitle = style({

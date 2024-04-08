@@ -15,7 +15,6 @@ export const cartItemQueryOptions = () =>
       const { data } = await fetcher.get<Cart[]>('/carts');
       return data;
     },
-    refetchOnMount: true,
   });
 
 export const useDeleteCartItemMutation = () => {
