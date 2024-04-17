@@ -15,7 +15,7 @@ export const ProductList = () => {
 
   return (
     <>
-      <section>
+      <section className='product-container'>
         {data.map((item) => (
           <ProductCard
             key={item.id}
@@ -44,10 +44,10 @@ export const Route = createFileRoute('/')({
   loader: ({ context }) =>
     context.queryClient.ensureQueryData(productListQueryOptions()),
   pendingComponent: () => (
-    <section>
+    <section className='product-container'>
       {Array.from({ length: 20 }).map((_, index) => (
-        <div>
-          <Skeleton key={index} width={285} height={285} />
+        <div key={index}>
+          <Skeleton width={285} height={285} />
           <div style={{ height: 49 }} />
         </div>
       ))}

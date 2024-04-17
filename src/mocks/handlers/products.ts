@@ -2,7 +2,7 @@ import { delay, http, HttpResponse } from 'msw';
 import { Product } from '../../routes/products/-queryOptions';
 
 export const handlers = [
-  http.all('*', async () => await delay()),
+  http.all('*', async () => await delay(1500)),
 
   http.get('/products', () => {
     return HttpResponse.json([
