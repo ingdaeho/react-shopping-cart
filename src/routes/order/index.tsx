@@ -7,12 +7,6 @@ import { useModal } from '../../hooks/useModal';
 import { useAddToCartMutation } from '../products/-queryOptions';
 import CartModal from './-component/CartModal';
 
-export const Route = createFileRoute('/order/')({
-  component: Order,
-  loader: ({ context }) =>
-    context.queryClient.ensureQueryData(orderListQueryOptions()),
-});
-
 function Order() {
   const navigate = useNavigate();
   const { data } = useSuspenseQuery(orderListQueryOptions());
@@ -76,3 +70,10 @@ function Order() {
     </>
   );
 }
+
+export const Route = createFileRoute('/order/')({
+  component: Order,
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(orderListQueryOptions()),
+  pendingComponent: () => <div />,
+});

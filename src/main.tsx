@@ -24,7 +24,6 @@ const router = createRouter({
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
-  defaultPendingComponent: () => <div>loading...</div>,
 });
 
 declare module '@tanstack/react-router' {

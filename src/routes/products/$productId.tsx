@@ -50,4 +50,5 @@ export const Route = createFileRoute('/products/$productId')({
   }),
   loader: ({ context, params }) =>
     context.queryClient.ensureQueryData(productQueryOptions(params.productId)),
+  pendingComponent: () => <div />,
 });

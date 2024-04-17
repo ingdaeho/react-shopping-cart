@@ -128,4 +128,5 @@ export const Route = createFileRoute('/cart/')({
   component: Cart,
   loader: ({ context }) =>
     context.queryClient.ensureQueryData(cartItemQueryOptions()),
+  pendingComponent: () => <div />,
 });

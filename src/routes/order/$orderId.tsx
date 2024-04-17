@@ -79,4 +79,5 @@ export const Route = createFileRoute('/order/$orderId')({
   }),
   loader: ({ context, params }) =>
     context.queryClient.ensureQueryData(orderQueryOptions(params.orderId)),
+  pendingComponent: () => <div />,
 });

@@ -13,13 +13,20 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   loader: ({ context }) =>
     context.queryClient.ensureQueryData(cartItemQueryOptions()),
+  pendingComponent: () => (
+    <>
+      <GNB cartItemCount={0} />
+      <Outlet />
+    </>
+  ),
 });
 
 function RootComponent() {
-  const { data } = useSuspenseQuery(cartItemQueryOptions());
+  const { data: cartItems } = useSuspenseQuery(cartItemQueryOptions());
+
   return (
     <>
-      <GNB cartItemCount={data.length} />
+      <GNB cartItemCount={cartItems.length} />
       <Outlet />
       <ReactQueryDevtools buttonPosition='top-right' />
       <TanStackRouterDevtools position='bottom-right' />

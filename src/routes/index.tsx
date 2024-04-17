@@ -4,6 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { productListQueryOptions } from './products/-queryOptions';
 import ProductCard from './products/-components/ProductCard';
 import SnackBar from '../components/SnackBar/SnackBar';
+import Skeleton from '../components/Skeleton/Skeleton';
 
 export const ProductList = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export const ProductList = () => {
 
   return (
     <>
-      <section className='product-container'>
+      <section>
         {data.map((item) => (
           <ProductCard
             key={item.id}
@@ -23,7 +24,7 @@ export const ProductList = () => {
             onClick={() =>
               navigate({
                 to: '/products/$productId',
-                params: { productId: item.id.toString() },
+                params: { productId: item.id },
               })
             }
           />
@@ -40,7 +41,16 @@ export const ProductList = () => {
 
 export const Route = createFileRoute('/')({
   component: ProductList,
-  loader: (opts) =>
-    opts.context.queryClient.ensureQueryData(productListQueryOptions()),
-  notFoundComponent: () => <div>product not found</div>,
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(productListQueryOptions()),
+  pendingComponent: () => (
+    <section>
+      {Array.from({ length: 20 }).map((_, index) => (
+        <div>
+          <Skeleton key={index} width={285} height={285} />
+          <div style={{ height: 49 }} />
+        </div>
+      ))}
+    </section>
+  ),
 });
