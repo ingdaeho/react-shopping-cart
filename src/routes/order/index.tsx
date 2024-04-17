@@ -34,7 +34,7 @@ function Order() {
                   onClick={() =>
                     navigate({
                       to: '/order/$orderId',
-                      params: { orderId: order.id.toString() },
+                      params: { orderId: order.id },
                     })
                   }
                 >

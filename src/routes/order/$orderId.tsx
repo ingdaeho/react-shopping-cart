@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { orderQueryOptions } from './-queryOptions';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { z } from 'zod';
 import Button from '../../components/Button/Button';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
@@ -73,6 +74,9 @@ export const OrderDetail = () => {
 
 export const Route = createFileRoute('/order/$orderId')({
   component: OrderDetail,
+  parseParams: ({ orderId }) => ({
+    orderId: z.number().int().parse(Number(orderId)),
+  }),
   loader: ({ context, params }) =>
     context.queryClient.ensureQueryData(orderQueryOptions(params.orderId)),
 });

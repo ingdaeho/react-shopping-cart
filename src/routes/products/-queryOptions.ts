@@ -23,7 +23,7 @@ export const productListQueryOptions = () =>
     },
   });
 
-export const productQueryOptions = (productId: string) =>
+export const productQueryOptions = (productId: number) =>
   queryOptions({
     queryKey: ['products', productId],
     queryFn: async () => {

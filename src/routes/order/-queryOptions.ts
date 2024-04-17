@@ -23,13 +23,13 @@ export const orderListQueryOptions = () =>
     queryFn: fetchOrderList,
   });
 
-const fetchOrder = async (orderId: string) => {
+const fetchOrder = async (orderId: number) => {
   const { data } = await fetcher.get<Order>(`/orders/${orderId}`);
 
   return data;
 };
 
-export const orderQueryOptions = (orderId: string) =>
+export const orderQueryOptions = (orderId: number) =>
   queryOptions({
     queryKey: ['orders', orderId],
     queryFn: () => fetchOrder(orderId),

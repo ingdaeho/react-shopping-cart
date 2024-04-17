@@ -1,11 +1,12 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { z } from 'zod';
 import Button from '../../components/Button/Button';
 import { productQueryOptions, useAddToCartMutation } from './-queryOptions';
-import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const ProductDetail = () => {
-  const { productId } = Route.useParams();
   const navigate = useNavigate();
+  const { productId } = Route.useParams();
   const { data } = useSuspenseQuery(productQueryOptions(productId));
   const { mutate } = useAddToCartMutation();
 
@@ -44,8 +45,9 @@ export const ProductDetail = () => {
 
 export const Route = createFileRoute('/products/$productId')({
   component: ProductDetail,
-  loader: (opts) =>
-    opts.context.queryClient.ensureQueryData(
-      productQueryOptions(opts.params.productId)
-    ),
+  parseParams: ({ productId }) => ({
+    productId: z.number().int().parse(Number(productId)),
+  }),
+  loader: ({ context, params }) =>
+    context.queryClient.ensureQueryData(productQueryOptions(params.productId)),
 });
