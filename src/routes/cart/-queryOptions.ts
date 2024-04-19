@@ -1,18 +1,11 @@
-import { queryOptions, useMutation } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { z } from 'zod';
 import fetcher from '../../lib/axios';
-import { Product, productSchema } from '../products/-queryOptions';
-import { queryClient } from '../../main';
-
-export interface Cart {
-  id: number;
-  product: Product;
-}
-
-export const cartSchema = z.object({
-  id: z.number(),
-  product: productSchema,
-});
+import { Cart, cartSchema } from '../../types';
 
 export const cartItemQueryOptions = () =>
   queryOptions({
@@ -24,6 +17,8 @@ export const cartItemQueryOptions = () =>
   });
 
 export const useDeleteCartItemMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<unknown, Error, number, { previousCartItems?: Cart[] }>({
     mutationFn: async (id) => await fetcher.delete(`/carts/${id}`),
     onMutate: async (cartItemId) => {

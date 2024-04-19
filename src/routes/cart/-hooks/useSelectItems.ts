@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Cart } from '../-queryOptions';
+import { Cart } from '../../../types';
 
 export const useSelectItems = (data: Cart[]) => {
   const [selectedItems, setSelectedItems] = useState<{

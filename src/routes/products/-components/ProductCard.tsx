@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Product, useAddToCartMutation } from '../-queryOptions';
+import { useAddToCartMutation } from '../-queryOptions';
 import CartIcon from '../../../assets/svgs/cart.svg?react';
+import { Product } from '../../../types';
 
 interface Props {
   product: Product;

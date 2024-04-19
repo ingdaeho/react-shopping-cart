@@ -6,22 +6,7 @@ import {
 import { z } from 'zod';
 import fetcher from '../../lib/axios';
 import { cartItemQueryOptions } from '../cart/-queryOptions';
-
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  quantity?: number;
-}
-
-export const productSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  price: z.number(),
-  imageUrl: z.string(),
-  quantity: z.number().optional(),
-});
+import { Product, productSchema } from '../../types';
 
 export const productListQueryOptions = () =>
   queryOptions({

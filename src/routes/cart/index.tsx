@@ -15,6 +15,7 @@ import TrashIcon from '../../assets/svgs/trash.svg?react';
 
 function Cart() {
   const { data } = useSuspenseQuery(cartItemQueryOptions());
+  console.log('🚀 ~ Cart ~ data:', data);
   const [cartItems, setCartItems] = useState(data);
 
   const deleteCartItem = useDeleteCartItemMutation();
