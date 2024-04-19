@@ -1,6 +1,7 @@
 import { queryOptions, useMutation } from '@tanstack/react-query';
+import { z } from 'zod';
 import fetcher from '../../lib/axios';
-import { Product } from '../products/-queryOptions';
+import { Product, productSchema } from '../products/-queryOptions';
 import { queryClient } from '../../main';
 
 export interface Cart {
@@ -8,12 +9,17 @@ export interface Cart {
   product: Product;
 }
 
+export const cartSchema = z.object({
+  id: z.number(),
+  product: productSchema,
+});
+
 export const cartItemQueryOptions = () =>
   queryOptions({
     queryKey: ['carts'],
     queryFn: async () => {
       const { data } = await fetcher.get<Cart[]>('/carts');
-      return data;
+      return z.array(cartSchema).parse(data);
     },
   });
 

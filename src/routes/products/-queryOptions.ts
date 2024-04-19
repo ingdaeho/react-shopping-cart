@@ -3,6 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { z } from 'zod';
 import fetcher from '../../lib/axios';
 import { cartItemQueryOptions } from '../cart/-queryOptions';
 
@@ -14,12 +15,21 @@ export interface Product {
   quantity?: number;
 }
 
+export const productSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  price: z.number(),
+  imageUrl: z.string(),
+  quantity: z.number().optional(),
+});
+
 export const productListQueryOptions = () =>
   queryOptions({
     queryKey: ['products'],
     queryFn: async () => {
       const { data } = await fetcher.get<Product[]>('/products');
-      return data;
+
+      return z.array(productSchema).parse(data);
     },
   });
 
@@ -64,7 +74,7 @@ export const useAddToCartMutation = () => {
       }
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(cartItemQueryOptions());
+      queryClient.invalidateQueries(cartItemQueryOptions());
     },
   });
 };
