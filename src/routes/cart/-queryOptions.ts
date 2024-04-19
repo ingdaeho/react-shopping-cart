@@ -24,8 +24,30 @@ export const cartItemQueryOptions = () =>
   });
 
 export const useDeleteCartItemMutation = () => {
-  return useMutation<unknown, Error, number>({
+  return useMutation<unknown, Error, number, { previousCartItems?: Cart[] }>({
     mutationFn: async (id) => await fetcher.delete(`/carts/${id}`),
-    onSuccess: () => queryClient.invalidateQueries(),
+    onMutate: async (cartItemId) => {
+      await queryClient.cancelQueries(cartItemQueryOptions());
+      const previousCartItems = queryClient.getQueryData(
+        cartItemQueryOptions().queryKey
+      );
+
+      if (previousCartItems && previousCartItems.length > 0) {
+        queryClient.setQueryData(cartItemQueryOptions().queryKey, [
+          ...previousCartItems.filter(({ id }) => id !== cartItemId),
+        ]);
+      }
+
+      return { previousCartItems };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          cartItemQueryOptions().queryKey,
+          context.previousCartItems
+        );
+      }
+    },
+    onSettled: () => queryClient.invalidateQueries(cartItemQueryOptions()),
   });
 };
