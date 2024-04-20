@@ -11,8 +11,10 @@ import './styles/index.css';
 
 export const queryClient = new QueryClient();
 
-const { worker } = await import('./mocks/browser.ts');
-await worker.start();
+if (import.meta.env.DEV) {
+  const { worker } = await import('./mocks/browser.ts');
+  await worker.start();
+}
 
 const router = createRouter({
   routeTree,

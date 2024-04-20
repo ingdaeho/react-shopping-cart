@@ -19,5 +19,8 @@ export default defineConfig(({ mode }) => {
     define: {
       __API_URL__: JSON.stringify(env.API_URL),
     },
+    build: {
+      target: 'esnext',
+    },
   };
 });
