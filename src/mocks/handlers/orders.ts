@@ -1,5 +1,5 @@
 import { http, delay, HttpResponse } from 'msw';
-import { Order } from '../../routes/order/-queryOptions';
+import { Order } from '../../types';
 
 export const handlers = [
   http.all('*', async () => await delay()),

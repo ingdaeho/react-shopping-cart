@@ -50,7 +50,7 @@ export const useAddToCartMutation = () => {
 
       return { previousCartItemCount };
     },
-    onError: (err, variables, context) => {
+    onError: (_, __, context) => {
       if (context?.previousCartItemCount) {
         queryClient.setQueryData(
           cartItemQueryOptions().queryKey,

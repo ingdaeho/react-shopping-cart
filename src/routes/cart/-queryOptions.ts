@@ -36,7 +36,7 @@ export const useDeleteCartItemMutation = () => {
 
       return { previousCartItems };
     },
-    onError: (err, variables, context) => {
+    onError: (_, __, context) => {
       if (context?.previousCartItems) {
         queryClient.setQueryData(
           cartItemQueryOptions().queryKey,

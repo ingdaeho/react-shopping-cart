@@ -1,5 +1,5 @@
 import { delay, http, HttpResponse } from 'msw';
-import { Product } from '../../routes/products/-queryOptions';
+import { Product } from '../../types';
 
 export const handlers = [
   http.all('*', async () => await delay(1500)),
