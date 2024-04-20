@@ -2,13 +2,13 @@ import { nav, navTitle, navButton } from './GNB.css';
 import classNames from 'classnames';
 import { useNavigate } from '@tanstack/react-router';
 import Badge from '../Badge/Badge';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { cartItemQueryOptions } from '../../routes/cart/-queryOptions';
 
-interface Props {
-  cartItemCount: number;
-}
-
-export default function GNB({ cartItemCount }: Props) {
+export default function GNB() {
   const navigate = useNavigate();
+  const { data: cartItems } = useSuspenseQuery(cartItemQueryOptions());
+
   return (
     <nav className={classNames(nav, 'flex', 'justify-around')}>
       <div className='flex-center'>
@@ -17,7 +17,7 @@ export default function GNB({ cartItemCount }: Props) {
         </h1>
       </div>
       <div className='flex gap-15'>
-        <Badge badgeContent={cartItemCount}>
+        <Badge badgeContent={cartItems.length}>
           <button
             className={navButton}
             onClick={() => navigate({ to: '/cart' })}

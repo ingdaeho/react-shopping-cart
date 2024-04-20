@@ -14,6 +14,7 @@ export const cartItemQueryOptions = () =>
       const { data } = await fetcher.get<Cart[]>('/carts');
       return z.array(cartSchema).parse(data);
     },
+    initialData: [],
   });
 
 export const useDeleteCartItemMutation = () => {
