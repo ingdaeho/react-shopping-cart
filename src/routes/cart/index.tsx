@@ -26,7 +26,7 @@ function Cart() {
   } = useSelectItems(cartItems);
 
   const totalAmount = cartItems.reduce((acc, { id, product }) => {
-    if (selectedItems[id]) {
+    if (selectedItems.has(id)) {
       return acc + product.price * (product.quantity || 1);
     }
     return acc;
@@ -70,7 +70,7 @@ function Cart() {
                 <div className='cart-container'>
                   <div className='flex gap-15 mt-10'>
                     <Checkbox
-                      checked={!!selectedItems[cartItem.id]}
+                      checked={selectedItems.has(cartItem.id)}
                       onChange={() => toggleItemSelection(cartItem.id)}
                     />
                     <img className='w-144 h-144' src={imageUrl} alt={name} />
@@ -113,8 +113,7 @@ function Cart() {
                 variant='contained'
                 color='primary'
               >
-                주문하기({Object.values(selectedItems).filter(Boolean).length}
-                개)
+                주문하기({selectedItems.size}개)
               </Button>
             </div>
           </div>
