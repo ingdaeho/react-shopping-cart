@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
 import {
   numberInputContainer,
   numberInput,
@@ -11,28 +11,19 @@ interface Props {
 }
 
 const NumberInput = ({ value, onChange }: Props) => {
-  const [inputValue, setInputValue] = useState(value);
-
-  useEffect(() => {
-    setInputValue(value);
-  }, [value]);
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(event.target.value, 10);
-    setInputValue(newValue);
     onChange(newValue);
   };
 
   const handlePlus = () => {
-    const newValue = inputValue + 1;
-    setInputValue(newValue);
+    const newValue = value + 1;
     onChange(newValue);
   };
 
   const handleMinus = () => {
-    const newValue = inputValue - 1;
+    const newValue = value - 1;
     if (newValue <= 0) return;
-    setInputValue(newValue);
     onChange(newValue);
   };
 
@@ -41,7 +32,7 @@ const NumberInput = ({ value, onChange }: Props) => {
       <input
         type='number'
         className={numberInput}
-        value={inputValue}
+        value={value}
         onChange={handleChange}
       />
       <div>
