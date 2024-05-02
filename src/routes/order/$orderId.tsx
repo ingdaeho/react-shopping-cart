@@ -7,7 +7,7 @@ import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
 import { useAddToCartMutation } from '../products/-queryOptions';
 import { useModal } from '../../hooks/useModal';
-import CartModal from './-component/CartModal';
+import CartModal from './-components/CartModal';
 
 export const OrderDetail = () => {
   const { orderId } = Route.useParams();

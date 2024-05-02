@@ -4,7 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { productListQueryOptions } from './products/-queryOptions';
 import ProductCard from './products/-components/ProductCard';
 import SnackBar from '../components/SnackBar/SnackBar';
-import Skeleton from '../components/Skeleton/Skeleton';
+import { PendingComponent } from './-components/pendingComponent';
 
 export const ProductList = () => {
   const navigate = useNavigate();
@@ -43,14 +43,5 @@ export const Route = createFileRoute('/')({
   component: ProductList,
   loader: ({ context }) =>
     context.queryClient.ensureQueryData(productListQueryOptions()),
-  pendingComponent: () => (
-    <section className='product-container'>
-      {Array.from({ length: 20 }).map((_, index) => (
-        <div key={index}>
-          <Skeleton width={285} height={285} />
-          <div style={{ height: 49 }} />
-        </div>
-      ))}
-    </section>
-  ),
+  pendingComponent: PendingComponent,
 });

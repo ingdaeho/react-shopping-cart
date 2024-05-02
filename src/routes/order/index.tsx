@@ -5,7 +5,7 @@ import { orderListQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import { useModal } from '../../hooks/useModal';
 import { useAddToCartMutation } from '../products/-queryOptions';
-import CartModal from './-component/CartModal';
+import CartModal from './-components/CartModal';
 
 function Order() {
   const navigate = useNavigate();
