@@ -6,9 +6,15 @@ interface Props {
   open: boolean;
   onClose: () => void;
   message: string;
+  duration?: number;
 }
 
-export const SnackBar = ({ open, onClose, message }: Props) => {
+export const SnackBar = ({
+  open,
+  onClose,
+  message,
+  duration = 3000,
+}: Props) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -18,7 +24,7 @@ export const SnackBar = ({ open, onClose, message }: Props) => {
       const timer = setTimeout(() => {
         setShow(false);
         onClose();
-      }, 3000);
+      }, duration);
 
       return () => clearTimeout(timer);
     }
