@@ -27,3 +27,15 @@ export type Cart = z.infer<typeof cartSchema>;
 export type Product = z.infer<typeof productSchema>;
 
 export type Order = z.infer<typeof orderSchema>;
+
+export const paginatedProductSchema = z.object({
+  items: z.array(productSchema),
+  pageNumber: z.number(),
+  pageSize: z.number(),
+  totalPages: z.number(),
+  totalCount: z.number(),
+  isLastPage: z.boolean(),
+  isFirstPage: z.boolean(),
+});
+
+export type PaginatedProduct = z.infer<typeof paginatedProductSchema>;
