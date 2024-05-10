@@ -1,36 +1,29 @@
-import { nav, navTitle, navButton } from './GNB.css';
-import classNames from 'classnames';
-import { useNavigate } from '@tanstack/react-router';
-import Badge from '../Badge/Badge';
+import { Link } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import classNames from 'classnames';
+import { nav, navTitle, navButton } from './GNB.css';
+import Badge from '../Badge/Badge';
 import { cartItemQueryOptions } from '../../routes/cart/-queryOptions';
 
 export default function GNB() {
-  const navigate = useNavigate();
   const { data: cartItems } = useSuspenseQuery(cartItemQueryOptions());
 
   return (
     <nav className={classNames(nav, 'flex', 'justify-around')}>
       <div className='flex-center'>
-        <h1 className={navTitle} onClick={() => navigate({ to: '/' })}>
-          CLEAN CODE SHOP
-        </h1>
+        <Link to='/'>
+          <h1 className={navTitle}>CLEAN CODE SHOP</h1>
+        </Link>
       </div>
       <div className='flex gap-15'>
         <Badge badgeContent={cartItems.length}>
-          <button
-            className={navButton}
-            onClick={() => navigate({ to: '/cart' })}
-          >
+          <Link to='/cart' className={navButton}>
             장바구니
-          </button>
+          </Link>
         </Badge>
-        <button
-          className={navButton}
-          onClick={() => navigate({ to: '/order' })}
-        >
+        <Link to='/orderList' className={navButton}>
           주문목록
-        </button>
+        </Link>
       </div>
     </nav>
   );

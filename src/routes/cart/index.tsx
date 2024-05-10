@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import Button from '../../components/Button/Button';
@@ -9,21 +9,40 @@ import HighlightText from '../../components/HighlightText/HighlightText';
 import { useSelectItems } from './-hooks/useSelectItems';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import TrashIcon from '../../assets/svgs/trash.svg?react';
-import { useDeleteCartItem, useDeleteSelectedItems } from './-hooks';
+import {
+  useCreateOrder,
+  useDeleteCartItem,
+  useDeleteSelectedItems,
+} from './-hooks';
 import { useCartStore } from '../../store/cart';
 import { useModal } from '../../hooks/useModal';
 import DeleteConfirmModal from './-components/DeleteConfirmModal';
+import OrderConfirmModal from './-components/OrderConfirmModal';
 
 function Cart() {
+  const navigate = useNavigate();
   const { data } = useSuspenseQuery(cartItemQueryOptions());
   const cartItems = useCartStore((state) => state.items);
   const setItems = useCartStore((state) => state.setItems);
   const handleQuantity = useCartStore((state) => state.handleQuantity);
 
-  const { isOpen, openModal, closeModal: handleClose, modalRef } = useModal();
+  const {
+    isOpen: isDeleteModalOpen,
+    openModal: openDeleteModal,
+    closeModal: handleCloseDeleteModal,
+    modalRef: deleteModalRef,
+  } = useModal();
+
+  const {
+    isOpen: isOrderModalOpen,
+    openModal: openOrderModal,
+    closeModal: handleCloseOrderModal,
+    modalRef: orderModalRef,
+  } = useModal();
 
   const deleteCartItem = useDeleteCartItem();
   const deleteSelectedItems = useDeleteSelectedItems();
+  const createOrder = useCreateOrder();
   const {
     isAllSelected,
     selectedItems,
@@ -54,7 +73,7 @@ function Cart() {
                 checked={isAllSelected}
                 onChange={toggleAllItemsSelection}
               />
-              <Button variant='outlined' size='small' onClick={openModal}>
+              <Button variant='outlined' size='small' onClick={openDeleteModal}>
                 상품삭제
               </Button>
             </div>
@@ -111,6 +130,7 @@ function Cart() {
                   variant='contained'
                   color='primary'
                   disabled={selectedItems.size === 0}
+                  onClick={openOrderModal}
                 >
                   주문하기({selectedItems.size}개)
                 </Button>
@@ -120,12 +140,27 @@ function Cart() {
         </div>
       </section>
       <DeleteConfirmModal
-        ref={modalRef}
-        open={isOpen}
-        onClose={handleClose}
+        ref={deleteModalRef}
+        open={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
         onOk={() =>
           deleteSelectedItems.mutate(Array.from(selectedItems.values()))
         }
+      />
+      <OrderConfirmModal
+        ref={orderModalRef}
+        open={isOrderModalOpen}
+        onClose={handleCloseOrderModal}
+        onOk={async () => {
+          const ids = Array.from(selectedItems.values());
+          const orderItems = cartItems.filter((item) => ids.includes(item.id));
+
+          const { id } = await createOrder.mutateAsync(orderItems);
+          navigate({
+            to: '/order/$orderId',
+            params: { orderId: id },
+          });
+        }}
       />
     </>
   );

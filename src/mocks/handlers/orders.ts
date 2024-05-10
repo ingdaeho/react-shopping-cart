@@ -1,5 +1,5 @@
 import { http, delay, HttpResponse } from 'msw';
-import { Order } from '../../types';
+import { Product } from '../../types';
 import { orders } from '../db.json';
 
 export const handlers = [
@@ -9,25 +9,29 @@ export const handlers = [
     return HttpResponse.json(orders);
   }),
 
-  http.post<object, Order>('/orders', async ({ request }) => {
+  http.post<object, Product[]>('/orders', async ({ request }) => {
     const body = await request.json();
-    const { orderDetails } = body;
+    const products = body;
 
-    for (const orderDetail of orderDetails) {
-      const { quantity, price, name, imageUrl } = orderDetail;
+    for (const product of products) {
+      const { quantity, price, name, imageUrl } = product;
 
       if (
         !Number.isInteger(quantity) ||
-        quantity < 1 ||
+        quantity! < 1 ||
         !Number.isInteger(price) ||
         typeof name !== 'string' ||
         typeof imageUrl !== 'string'
       ) {
-        new HttpResponse('', { status: 400 });
-        return;
+        return new HttpResponse('error occurred on create order', {
+          status: 400,
+        });
       }
     }
-    new HttpResponse('', { status: 201 });
+    return HttpResponse.json({
+      id: new Date().getTime(),
+      OrderDetail: products,
+    });
   }),
 
   http.get('/orders/:orderId', ({ params }) => {

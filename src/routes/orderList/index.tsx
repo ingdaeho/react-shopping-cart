@@ -27,7 +27,7 @@ function Order() {
                   style={{ cursor: 'pointer' }}
                   onClick={() =>
                     navigate({
-                      to: '/order/$orderId',
+                      to: '/orderList/$orderId',
                       params: { orderId: order.id },
                     })
                   }
@@ -71,7 +71,7 @@ function Order() {
   );
 }
 
-export const Route = createFileRoute('/order/')({
+export const Route = createFileRoute('/orderList/')({
   component: Order,
   loader: ({ context }) =>
     context.queryClient.ensureQueryData(orderListQueryOptions()),

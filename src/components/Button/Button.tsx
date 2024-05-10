@@ -29,7 +29,13 @@ const Button = ({
   );
 
   return (
-    <button type='button' className={buttonClass} {...props} onClick={onClick}>
+    <button
+      type='button'
+      className={buttonClass}
+      disabled={disabled}
+      {...props}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
