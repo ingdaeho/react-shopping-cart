@@ -1,49 +1,41 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import Button from '../../components/Button/Button';
-import {
-  cartItemQueryOptions,
-  useDeleteCartItemMutation,
-} from './-queryOptions';
+import { cartItemQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
 import { useSelectItems } from './-hooks/useSelectItems';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import TrashIcon from '../../assets/svgs/trash.svg?react';
+import { useDeleteCartItem } from './-hooks';
+import { useCartStore } from '../../store/cart';
 
 function Cart() {
   const { data } = useSuspenseQuery(cartItemQueryOptions());
-  const [cartItems, setCartItems] = useState(data);
+  const cartItems = useCartStore((state) => state.items);
+  const setItems = useCartStore((state) => state.setItems);
+  const handleQuantity = useCartStore((state) => state.handleQuantity);
 
-  const deleteCartItem = useDeleteCartItemMutation();
+  const deleteCartItem = useDeleteCartItem();
   const {
     isAllSelected,
     selectedItems,
     toggleItemSelection,
     toggleAllItemsSelection,
-  } = useSelectItems(cartItems);
+  } = useSelectItems();
 
-  const totalAmount = cartItems.reduce((acc, { id, product }) => {
+  const totalAmount = cartItems.reduce((acc, { id, price, quantity }) => {
     if (selectedItems.has(id)) {
-      return acc + product.price * (product.quantity || 1);
+      return acc + price * (quantity || 1);
     }
     return acc;
   }, 0);
 
-  const handleQuantityChange = (id: number, newQuantity: number) => {
-    setCartItems(
-      cartItems.map((cartItem) =>
-        cartItem.id === id
-          ? {
-              ...cartItem,
-              product: { ...cartItem.product, quantity: newQuantity },
-            }
-          : cartItem
-      )
-    );
-  };
+  useEffect(() => {
+    setItems(data);
+  }, [data]);
 
   return (
     <section className='cart-section'>
@@ -64,7 +56,7 @@ function Cart() {
           <hr className='divide-line-gray mt-10' />
 
           {cartItems.map((cartItem) => {
-            const { name, imageUrl, price, quantity } = cartItem.product;
+            const { name, imageUrl, price, quantity } = cartItem;
             return (
               <div key={cartItem.id}>
                 <div className='cart-container'>
@@ -84,7 +76,7 @@ function Cart() {
                     <NumberInput
                       value={quantity || 1}
                       onChange={(newQuantity) =>
-                        handleQuantityChange(cartItem.id, newQuantity)
+                        handleQuantity(cartItem.id, newQuantity)
                       }
                     />
                     <span className='cart-price'>

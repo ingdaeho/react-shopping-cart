@@ -1,12 +1,15 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Cart } from '../../../types';
+import { useCartStore } from '../../../store/cart';
 
-export const useSelectItems = (data: Cart[]) => {
+export const useSelectItems = () => {
+  const cartItems = useCartStore((state) => state.items);
   const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
 
   const isAllSelected = useMemo(() => {
-    return data.length > 0 && data.every(({ id }) => selectedItems.has(id));
-  }, [data, selectedItems]);
+    return (
+      cartItems.length > 0 && cartItems.every(({ id }) => selectedItems.has(id))
+    );
+  }, [cartItems, selectedItems]);
 
   const toggleItemSelection = useCallback((itemId: number) => {
     setSelectedItems((prev) => {
@@ -24,10 +27,10 @@ export const useSelectItems = (data: Cart[]) => {
     if (isAllSelected) {
       setSelectedItems(new Set());
     } else {
-      const newSelectedItems = new Set(data.map(({ id }) => id));
+      const newSelectedItems = new Set(cartItems.map(({ id }) => id));
       setSelectedItems(newSelectedItems);
     }
-  }, [data, isAllSelected]);
+  }, [cartItems, isAllSelected]);
 
   return {
     isAllSelected,
