@@ -110,6 +110,7 @@ function Cart() {
                   className='flex-center'
                   variant='contained'
                   color='primary'
+                  disabled={selectedItems.size === 0}
                 >
                   주문하기({selectedItems.size}개)
                 </Button>
