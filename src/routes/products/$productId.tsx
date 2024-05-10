@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 import Button from '../../components/Button/Button';
-import { productQueryOptions, useAddToCartMutation } from './-queryOptions';
+import { productQueryOptions } from './-queryOptions';
+import { useAddToCartMutation } from './-hooks';
 
 export const ProductDetail = () => {
   const navigate = useNavigate();

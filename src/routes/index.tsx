@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import ProductCard from './products/-components/ProductCard';
 import SnackBar from '../components/SnackBar/SnackBar';
 import { PendingComponent } from './-components/pendingComponent';
-import { useProductList } from './products/-hooks/useProductList';
+import { useProductList } from './products/-hooks';
 
 export const ProductList = () => {
   const navigate = useNavigate();

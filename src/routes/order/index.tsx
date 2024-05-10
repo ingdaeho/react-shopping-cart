@@ -4,7 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { orderListQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import { useModal } from '../../hooks/useModal';
-import { useAddToCartMutation } from '../products/-queryOptions';
+import { useAddToCartMutation } from '../products/-hooks';
 import CartModal from './-components/CartModal';
 
 function Order() {

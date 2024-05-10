@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { useAddToCartMutation } from '../-queryOptions';
+import { useAddToCartMutation } from '../-hooks';
 import CartIcon from '../../../assets/svgs/cart.svg?react';
 import { Product } from '../../../types';
 

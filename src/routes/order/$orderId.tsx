@@ -5,7 +5,7 @@ import { z } from 'zod';
 import Button from '../../components/Button/Button';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
-import { useAddToCartMutation } from '../products/-queryOptions';
+import { useAddToCartMutation } from '../products/-hooks';
 import { useModal } from '../../hooks/useModal';
 import CartModal from './-components/CartModal';
 
