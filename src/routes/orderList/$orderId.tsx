@@ -15,7 +15,10 @@ export const OrderDetail = () => {
   const { isOpen, openModal, closeModal: handleClose, modalRef } = useModal();
   const { mutate } = useAddToCartMutation();
 
-  const totalPrice = data.orderDetails.reduce((acc, cur) => acc + cur.price, 0);
+  const totalPrice = data.orderDetails.reduce(
+    (acc, { price, quantity }) => acc + price * quantity,
+    0
+  );
 
   return (
     <>
@@ -26,7 +29,7 @@ export const OrderDetail = () => {
             <span>주문번호: {data.id}</span>
           </div>
           {data.orderDetails.map((product) => {
-            const { id, name, price, imageUrl } = product;
+            const { id, name, quantity, price, imageUrl } = product;
             return (
               <div className='order-list-item' key={id}>
                 <div className='flex gap-15 mt-10'>
@@ -34,7 +37,7 @@ export const OrderDetail = () => {
                   <div className='flex-col gap-15'>
                     <span className='order-name'>{name}</span>
                     <span className='order-info'>
-                      {price.toLocaleString()}원 / 수량: 3개
+                      {price.toLocaleString()}원 / 수량: {quantity}개
                     </span>
                   </div>
                 </div>

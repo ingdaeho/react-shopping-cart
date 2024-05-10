@@ -1,45 +1,58 @@
-import { http, delay, HttpResponse } from 'msw';
-import { Product } from '../../types';
-import { orders } from '../db.json';
+import { http, delay, HttpResponse, PathParams } from 'msw';
+import { Order } from '../../types';
+import { orders, carts } from './data';
 
 export const handlers = [
   http.all('*', async () => await delay()),
 
   http.get('/orders', () => {
-    return HttpResponse.json(orders);
+    return HttpResponse.json(Array.from(orders.values()));
   }),
 
-  http.post<object, Product[]>('/orders', async ({ request }) => {
-    const body = await request.json();
-    const products = body;
+  http.post<PathParams, Order['orderDetails']>(
+    '/orders',
+    async ({ request }) => {
+      const products = await request.json();
 
-    for (const product of products) {
-      const { quantity, price, name, imageUrl } = product;
+      const id = new Date().getTime();
 
-      if (
-        !Number.isInteger(quantity) ||
-        quantity! < 1 ||
-        !Number.isInteger(price) ||
-        typeof name !== 'string' ||
-        typeof imageUrl !== 'string'
-      ) {
-        return new HttpResponse('error occurred on create order', {
-          status: 400,
-        });
+      for (const product of products) {
+        const { quantity = 1, price, name, imageUrl } = product;
+
+        if (
+          !Number.isInteger(quantity) ||
+          quantity < 1 ||
+          !Number.isInteger(price) ||
+          typeof name !== 'string' ||
+          typeof imageUrl !== 'string'
+        ) {
+          return new HttpResponse('error occurred on create order', {
+            status: 400,
+          });
+        }
       }
+      orders.set(id, { id, orderDetails: products });
+
+      const productIds = products.map((product) => product.id);
+      const newCartItem = Array.from(carts.values()).filter(
+        (cartItem) => !productIds.includes(cartItem.product.id)
+      );
+
+      carts.clear();
+      newCartItem.forEach((cartItem) => {
+        carts.set(cartItem.id, cartItem);
+      });
+
+      return HttpResponse.json({
+        id,
+        orderDetails: products,
+      });
     }
-    return HttpResponse.json({
-      id: new Date().getTime(),
-      OrderDetail: products,
-    });
-  }),
+  ),
 
   http.get('/orders/:orderId', ({ params }) => {
     const { orderId } = params;
-
-    const order = orders.find((order) => {
-      return order.id === Number(orderId);
-    });
+    const order = orders.get(Number(orderId));
 
     if (!order) return new HttpResponse('Order not found', { status: 404 });
 
