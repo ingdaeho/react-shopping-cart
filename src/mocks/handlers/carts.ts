@@ -27,4 +27,8 @@ export const handlers = [
   http.delete('/carts/:id', async () => {
     return new HttpResponse('delete success', { status: 200 });
   }),
+
+  http.delete<object, { ids: Product['id'][] }>('/carts', async () => {
+    return new HttpResponse('delete success', { status: 200 });
+  }),
 ];
