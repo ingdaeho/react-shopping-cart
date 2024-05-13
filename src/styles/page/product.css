@@ -3,11 +3,7 @@
   justify-items: center;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  padding: 50px 360px;
-
-  img {
-    cursor: pointer;
-  }
+  padding: 80px 360px;
 }
 
 .product-info {
@@ -17,9 +13,6 @@
 
 .product-info__name {
   font-size: 12px;
-}
-
-.product-info__price {
 }
 
 .product-detail-container {

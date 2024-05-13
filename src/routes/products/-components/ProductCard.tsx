@@ -15,7 +15,12 @@ const ProductCard = ({ product, onClick, setShowSnackBar }: Props) => {
 
   return (
     <div>
-      <img src={imageUrl} alt={name} onClick={onClick} />
+      <img
+        src={imageUrl}
+        alt={name}
+        onClick={onClick}
+        style={{ width: 280, height: 280, cursor: 'pointer' }}
+      />
       <div className='flex justify-between w-280 p-5'>
         <div className='product-info'>
           <span className='product-info__name'>{name}</span>
