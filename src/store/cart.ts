@@ -1,20 +1,10 @@
 import { create } from 'zustand';
-import { Cart } from '../types';
-
-interface CartState {
-  items: Cart['product'][];
-  setItems: (items: Cart[]) => void;
-  handleQuantity: (id: number, quantity: number) => void;
-  selectedItems: Set<number>;
-  isAllSelected: boolean;
-  toggleAllItemsSelection: () => void;
-  toggleItemSelection: (id: number) => void;
-}
+import { Cart, CartState, Product } from '../types';
 
 export const useCartStore = create<CartState>()((set) => ({
   items: [],
   setItems: (items: Cart[]) => {
-    const itemMap = new Map<Cart['product']['id'], Cart['product']>();
+    const itemMap = new Map<Product['id'], Product>();
 
     items.forEach((item) => {
       const { id, name, price, imageUrl } = item.product;
