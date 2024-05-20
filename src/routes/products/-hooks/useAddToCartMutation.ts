@@ -1,36 +1,36 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import fetcher from '../../../lib/axios';
-import { Product } from '../../../types';
+import { Cart, Product } from '../../../types';
 import { cartItemQueryOptions } from '../../cart/-queryOptions';
 
 export const useAddToCartMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<Cart[], Error, Product, { previousCartItems?: Cart[] }>({
     mutationFn: async (product: Product) => {
       const { data } = await fetcher.post('/carts', { product });
       return data;
     },
     onMutate: async (product) => {
       await queryClient.cancelQueries(cartItemQueryOptions());
-      const previousCartItemCount = queryClient.getQueryData(
+      const previousCartItems = queryClient.getQueryData(
         cartItemQueryOptions().queryKey
       );
 
-      if (previousCartItemCount) {
+      if (previousCartItems) {
         queryClient.setQueryData(cartItemQueryOptions().queryKey, [
-          ...previousCartItemCount,
-          { id: Math.random(), product },
+          ...previousCartItems,
+          { id: new Date().getTime(), product },
         ]);
       }
 
-      return { previousCartItemCount };
+      return { previousCartItems };
     },
     onError: (_, __, context) => {
-      if (context?.previousCartItemCount) {
+      if (context?.previousCartItems) {
         queryClient.setQueryData(
           cartItemQueryOptions().queryKey,
-          context.previousCartItemCount
+          context.previousCartItems
         );
       }
     },

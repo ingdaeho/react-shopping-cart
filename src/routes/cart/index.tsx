@@ -6,7 +6,6 @@ import Button from '../../components/Button/Button';
 import { cartItemQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import HighlightText from '../../components/HighlightText/HighlightText';
-import { useSelectItems } from './-hooks/useSelectItems';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import TrashIcon from '../../assets/svgs/trash.svg?react';
 import {
@@ -26,6 +25,15 @@ function Cart() {
   const setItems = useCartStore((state) => state.setItems);
   const handleQuantity = useCartStore((state) => state.handleQuantity);
 
+  const isAllSelected = useCartStore((state) => state.isAllSelected);
+  const selectedItems = useCartStore((state) => state.selectedItems);
+  const toggleAllItemsSelection = useCartStore(
+    (state) => state.toggleAllItemsSelection
+  );
+  const toggleItemSelection = useCartStore(
+    (state) => state.toggleItemSelection
+  );
+
   const {
     isOpen: isDeleteModalOpen,
     openModal: openDeleteModal,
@@ -43,17 +51,9 @@ function Cart() {
   const deleteCartItem = useDeleteCartItem();
   const deleteSelectedItems = useDeleteSelectedItems();
   const createOrder = useCreateOrder();
-  const {
-    isAllSelected,
-    selectedItems,
-    toggleItemSelection,
-    toggleAllItemsSelection,
-  } = useSelectItems();
 
   const totalAmount = cartItems.reduce((acc, { id, price, quantity }) => {
-    if (selectedItems.has(id)) {
-      return acc + price * (quantity || 1);
-    }
+    if (selectedItems.has(id)) return acc + price * (quantity || 1);
     return acc;
   }, 0);
 

@@ -5,6 +5,10 @@ interface CartState {
   items: Cart['product'][];
   setItems: (items: Cart[]) => void;
   handleQuantity: (id: number, quantity: number) => void;
+  selectedItems: Set<number>;
+  isAllSelected: boolean;
+  toggleAllItemsSelection: () => void;
+  toggleItemSelection: (id: number) => void;
 }
 
 export const useCartStore = create<CartState>()((set) => ({
@@ -29,11 +33,36 @@ export const useCartStore = create<CartState>()((set) => ({
   handleQuantity: (id: number, quantity: number) => {
     set((state) => {
       return {
-        ...state,
         items: state.items.map((item) =>
           item.id === id ? { ...item, quantity } : item
         ),
       };
+    });
+  },
+  selectedItems: new Set(),
+  isAllSelected: false,
+  toggleItemSelection: (id: number) => {
+    set((state) => {
+      const newSelectedItems = new Set(state.selectedItems);
+      if (newSelectedItems.has(id)) {
+        newSelectedItems.delete(id);
+      } else {
+        newSelectedItems.add(id);
+      }
+      return {
+        selectedItems: newSelectedItems,
+        isAllSelected: newSelectedItems.size === state.items.length,
+      };
+    });
+  },
+  toggleAllItemsSelection: () => {
+    set((state) => {
+      if (state.isAllSelected) {
+        return { selectedItems: new Set(), isAllSelected: false };
+      } else {
+        const newSelectedItems = new Set(state.items.map(({ id }) => id));
+        return { selectedItems: newSelectedItems, isAllSelected: true };
+      }
     });
   },
 }));
