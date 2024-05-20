@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import Button from '../../components/Button/Button';
 import { cartItemQueryOptions } from './-queryOptions';
@@ -20,7 +19,7 @@ import OrderConfirmModal from './-components/OrderConfirmModal';
 
 function Cart() {
   const navigate = useNavigate();
-  const { data } = useSuspenseQuery(cartItemQueryOptions());
+  const data = Route.useLoaderData();
   const cartItems = useCartStore((state) => state.items);
   const setItems = useCartStore((state) => state.setItems);
   const handleQuantity = useCartStore((state) => state.handleQuantity);

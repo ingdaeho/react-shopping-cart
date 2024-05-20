@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import Button from '../../components/Button/Button';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { orderListQueryOptions } from './-queryOptions';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import { useModal } from '../../hooks/useModal';
@@ -9,7 +8,7 @@ import CartModal from './-components/CartModal';
 
 function Order() {
   const navigate = useNavigate();
-  const { data } = useSuspenseQuery(orderListQueryOptions());
+  const data = Route.useLoaderData();
   const { isOpen, openModal, closeModal: handleClose, modalRef } = useModal();
   const { mutate } = useAddToCartMutation();
 

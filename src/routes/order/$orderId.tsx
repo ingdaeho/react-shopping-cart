@@ -4,17 +4,16 @@ import HighlightText from '../../components/HighlightText/HighlightText';
 import PageTitle from '../../components/PageTitle/PageTitle';
 import Button from '../../components/Button/Button';
 import { orderQueryOptions } from '../orderList/-queryOptions';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { Fragment } from 'react/jsx-runtime';
 
 export const Order = () => {
-  const { orderId } = Route.useParams();
-  const { data } = useSuspenseQuery(orderQueryOptions(orderId));
+  const data = Route.useLoaderData();
 
   const totalPrice = data.orderDetails.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+
   return (
     <section className='order-section'>
       <PageTitle>주문/결제</PageTitle>
