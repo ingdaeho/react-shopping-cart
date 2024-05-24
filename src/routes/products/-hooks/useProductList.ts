@@ -1,14 +1,23 @@
 import { useRef, useEffect } from 'react';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import fetcher from '../../../lib/axios';
 import { PaginatedProduct, paginatedProductSchema } from '../../../types';
+import { useWindowSize } from '../../../hooks';
+
+const calculateLanes = (width: number) => {
+  if (width > 1280) return 4;
+  if (width > 1024) return 3;
+  if (width > 768) return 2;
+  if (width > 576) return 1;
+};
 
 export const useProductList = () => {
   const ref = useRef<HTMLDivElement | null>(null);
+  const { width } = useWindowSize();
 
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useSuspenseInfiniteQuery({
+    useInfiniteQuery({
       queryKey: ['products'],
       queryFn: async ({ pageParam }) => {
         const { data } = await fetcher.get<PaginatedProduct>(
@@ -30,7 +39,7 @@ export const useProductList = () => {
     count: hasNextPage ? allItems.length + 1 : allItems.length,
     estimateSize: () => 340,
     overscan: 7,
-    lanes: 4,
+    lanes: calculateLanes(width),
     scrollMargin: ref.current?.offsetTop ?? 0,
   });
 
@@ -53,6 +62,10 @@ export const useProductList = () => {
     isFetchingNextPage,
     virtualizer.getVirtualItems(),
   ]);
+
+  useEffect(() => {
+    virtualizer.measure();
+  }, [virtualizer, width]);
 
   return {
     ref,

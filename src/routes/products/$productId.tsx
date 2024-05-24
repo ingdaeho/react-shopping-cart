@@ -3,6 +3,7 @@ import { z } from 'zod';
 import Button from '../../components/Button/Button';
 import { productQueryOptions } from './-queryOptions';
 import { useAddToCartMutation } from './-hooks';
+import * as styles from './products.css';
 
 export const ProductDetail = () => {
   const navigate = useNavigate();
@@ -10,33 +11,38 @@ export const ProductDetail = () => {
   const { mutate } = useAddToCartMutation();
 
   return (
-    <div className='product-detail-container'>
-      <div className='flex-col-center w-520'>
-        <img
-          className='w-480 h-480 mb-10'
-          src={data.imageUrl}
-          alt={data.name}
-        />
-        <div className='product-detail-info'>
-          <span className='product-detail-info__name'>{data.name}</span>
-          <hr className='divide-line-gray my-20' />
-          <div className='flex justify-between'>
-            <span>금액</span>
-            <span className='product-detail-info__price'>
-              {data.price.toLocaleString()}원
-            </span>
+    <div className={styles.productContainer}>
+      <div className={styles.productDetailContainer}>
+        <section className={styles.productDetailLeftSection}>
+          <img
+            className={styles.productImage}
+            src={data.imageUrl}
+            alt={data.name}
+          />
+        </section>
+
+        <section className={styles.productDetailRightSection}>
+          <div className={styles.productDetailInfo}>
+            <span className={styles.productDetailInfoName}>{data.name}</span>
+            <hr className={styles.productDivideLine} />
+            <div className={styles.productDetailPriceBox}>
+              <span>금액</span>
+              <span className={styles.productDetailInfoPrice}>
+                {data.price.toLocaleString()}원
+              </span>
+            </div>
           </div>
-        </div>
-        <Button
-          variant='contained'
-          color='secondary'
-          className='flex-center mt-20'
-          onClick={() =>
-            mutate(data, { onSuccess: () => navigate({ to: '/cart' }) })
-          }
-        >
-          장바구니
-        </Button>
+          <Button
+            variant='contained'
+            color='secondary'
+            className={styles.addCartButton}
+            onClick={() =>
+              mutate(data, { onSuccess: () => navigate({ to: '/cart' }) })
+            }
+          >
+            장바구니
+          </Button>
+        </section>
       </div>
     </div>
   );

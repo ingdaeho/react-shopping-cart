@@ -8,6 +8,7 @@ import HighlightText from '../../components/HighlightText/HighlightText';
 import { useAddToCartMutation } from '../products/-hooks';
 import { useModal } from '../../hooks/useModal';
 import CartModal from './-components/CartModal';
+import * as styles from './order.css';
 
 export const OrderDetail = () => {
   const { orderId } = Route.useParams();
@@ -22,50 +23,63 @@ export const OrderDetail = () => {
 
   return (
     <>
-      <section className='order-section'>
+      <section className={styles.orderSectionContainer}>
         <PageTitle>주문내역상세</PageTitle>
-        <div className='order-list'>
-          <div className='order-list__header'>
-            <span>주문번호: {data.id}</span>
-          </div>
-          {data.orderDetails.map((product) => {
-            const { id, name, quantity, price, imageUrl } = product;
-            return (
-              <div className='order-list-item' key={id}>
-                <div className='flex gap-15 mt-10'>
-                  <img className='w-144 h-144' src={imageUrl} alt={name} />
-                  <div className='flex-col gap-15'>
-                    <span className='order-name'>{name}</span>
-                    <span className='order-info'>
-                      {price.toLocaleString()}원 / 수량: {quantity}개
-                    </span>
-                  </div>
-                </div>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  size='small'
-                  className='flex-center self-start'
-                  onClick={() =>
-                    mutate(product, {
-                      onSuccess: () => openModal(),
-                    })
-                  }
-                >
-                  장바구니
-                </Button>
-              </div>
-            );
-          })}
-        </div>
 
-        <div className='order-detail-container'>
-          <div className='w-480'>
-            <span className='order-detail-title'>결제금액 정보</span>
-            <hr className='divide-line-thin my-20' />
-            <div className='flex justify-between'>
-              <HighlightText>총 결제금액</HighlightText>
-              <HighlightText>{totalPrice.toLocaleString()}원</HighlightText>
+        <div className={styles.orderContentSection}>
+          <div className={styles.innerContainer}>
+            <div className={styles.orderList}>
+              <div className={styles.orderListHeader}>
+                <span>주문번호: {data.id}</span>
+              </div>
+              {data.orderDetails.map((product) => {
+                const { id, name, quantity, price, imageUrl } = product;
+                return (
+                  <div className={styles.orderListItem} key={id}>
+                    <div className={styles.orderDetailPriceContainer}>
+                      <img
+                        className={styles.orderItemImage}
+                        src={imageUrl}
+                        alt={name}
+                      />
+                      <div className={styles.orderItemInfoContainer}>
+                        <span className={styles.orderName}>{name}</span>
+                        <span className={styles.orderInfo}>
+                          {price.toLocaleString()}원 / 수량: {quantity}개
+                        </span>
+                      </div>
+                    </div>
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      size='small'
+                      className={styles.orderButton}
+                      onClick={() =>
+                        mutate(product, {
+                          onSuccess: () => openModal(),
+                        })
+                      }
+                    >
+                      장바구니
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className={styles.orderDetailContainer}>
+              <div className={styles.orderTotalPriceText}>
+                <span className={styles.orderDetailTitle}>결제금액 정보</span>
+                <hr
+                  className={styles.orderDivideThinLine}
+                  style={{ marginTop: 20 }}
+                />
+
+                <div className={styles.orderContainer}>
+                  <HighlightText>총 결제금액</HighlightText>
+                  <HighlightText>{totalPrice.toLocaleString()}원</HighlightText>
+                </div>
+              </div>
             </div>
           </div>
         </div>
