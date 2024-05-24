@@ -29,7 +29,8 @@ export const handlers = [
   http.delete<PathParams>('/carts/:id', async ({ params }) => {
     const { id: productId } = params;
     const cartItems = Array.from(carts.values());
-    const cartItem = cartItems.find(
+
+    const cartItem = cartItems.filter(
       (cartItem) => cartItem.product.id === Number(productId)
     );
 
@@ -37,7 +38,9 @@ export const handlers = [
       return new HttpResponse('cart item not found', { status: 404 });
     }
 
-    carts.delete(cartItem.id);
+    cartItem.forEach((cartItem) => {
+      carts.delete(cartItem.id);
+    });
     return new HttpResponse('delete success', { status: 200 });
   }),
 
@@ -48,14 +51,17 @@ export const handlers = [
       const cartItems = Array.from(carts.values());
 
       for (const id of ids) {
-        const cartItem = cartItems.find(
+        const cartItem = cartItems.filter(
           ({ product }) => product.id === Number(id)
         );
 
         if (!cartItem) {
           return new HttpResponse('cart item not found', { status: 404 });
         }
-        carts.delete(cartItem.id);
+
+        cartItem.forEach((cartItem) => {
+          carts.delete(cartItem.id);
+        });
       }
 
       return new HttpResponse('delete success', { status: 200 });
