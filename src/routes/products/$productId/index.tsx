@@ -1,9 +1,9 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { z } from 'zod';
-import Button from '../../components/Button/Button';
-import { productQueryOptions } from './-queryOptions';
-import { useAddToCartMutation } from './-hooks';
-import * as styles from './products.css';
+import Button from '../../../components/Button/Button';
+import { productQueryOptions } from '../-queryOptions';
+import { useAddToCartMutation } from '../-hooks';
+import * as styles from '../products.css';
 
 export const ProductDetail = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ export const ProductDetail = () => {
   );
 };
 
-export const Route = createFileRoute('/products/$productId')({
+export const Route = createFileRoute('/products/$productId/')({
   component: ProductDetail,
   parseParams: ({ productId }) => ({
     productId: z.number().int().parse(Number(productId)),

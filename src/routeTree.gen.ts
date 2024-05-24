@@ -14,9 +14,9 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as OrderListIndexImport } from './routes/orderList/index'
 import { Route as CartIndexImport } from './routes/cart/index'
-import { Route as ProductsProductIdImport } from './routes/products/$productId'
-import { Route as OrderListOrderIdImport } from './routes/orderList/$orderId'
 import { Route as OrderOrderIdImport } from './routes/order/$orderId'
+import { Route as ProductsProductIdIndexImport } from './routes/products/$productId/index'
+import { Route as OrderListOrderIdIndexImport } from './routes/orderList/$orderId/index'
 
 // Create/Update Routes
 
@@ -35,18 +35,18 @@ const CartIndexRoute = CartIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProductsProductIdRoute = ProductsProductIdImport.update({
-  path: '/products/$productId',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const OrderListOrderIdRoute = OrderListOrderIdImport.update({
-  path: '/orderList/$orderId',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const OrderOrderIdRoute = OrderOrderIdImport.update({
   path: '/order/$orderId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsProductIdIndexRoute = ProductsProductIdIndexImport.update({
+  path: '/products/$productId/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OrderListOrderIdIndexRoute = OrderListOrderIdIndexImport.update({
+  path: '/orderList/$orderId/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -62,20 +62,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderOrderIdImport
       parentRoute: typeof rootRoute
     }
-    '/orderList/$orderId': {
-      preLoaderRoute: typeof OrderListOrderIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/products/$productId': {
-      preLoaderRoute: typeof ProductsProductIdImport
-      parentRoute: typeof rootRoute
-    }
     '/cart/': {
       preLoaderRoute: typeof CartIndexImport
       parentRoute: typeof rootRoute
     }
     '/orderList/': {
       preLoaderRoute: typeof OrderListIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/orderList/$orderId/': {
+      preLoaderRoute: typeof OrderListOrderIdIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/products/$productId/': {
+      preLoaderRoute: typeof ProductsProductIdIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -86,10 +86,10 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   OrderOrderIdRoute,
-  OrderListOrderIdRoute,
-  ProductsProductIdRoute,
   CartIndexRoute,
   OrderListIndexRoute,
+  OrderListOrderIdIndexRoute,
+  ProductsProductIdIndexRoute,
 ])
 
 /* prettier-ignore-end */

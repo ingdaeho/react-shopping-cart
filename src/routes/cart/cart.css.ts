@@ -5,6 +5,11 @@ export const cartSectionContainer = style({
   marginTop: 110,
 });
 
+export const cartInnerContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+});
+
 export const cartSection = style([
   { width: '100%', maxWidth: 1200 },
   sprinkles({
