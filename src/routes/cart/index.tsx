@@ -20,10 +20,16 @@ function Cart() {
         <PageTitle>장바구니</PageTitle>
 
         <div className={styles.cartInnerContainer}>
-          <div className={styles.cartSection}>
-            <CartItemList />
-            <CartOrderInfo />
-          </div>
+          {data.length ? (
+            <div className={styles.cartSection}>
+              <CartItemList />
+              <CartOrderInfo />
+            </div>
+          ) : (
+            <div className={styles.emptyCartContainer}>
+              장바구니가 비었습니다
+            </div>
+          )}
         </div>
       </section>
     </>

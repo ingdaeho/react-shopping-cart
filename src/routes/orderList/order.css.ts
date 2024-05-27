@@ -218,3 +218,7 @@ export const innerContainer = style([
 export const orderTotalPriceText = style({
   width: 480,
 });
+
+export const emptyOrderContainer = style({
+  marginTop: '30%',
+});

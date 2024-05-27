@@ -185,3 +185,7 @@ export const orderButtonContainer = style([
 ]);
 
 export const orderButton = style({ display: 'flex', justifyContent: 'center' });
+
+export const emptyCartContainer = style({
+  marginTop: '30%',
+});
