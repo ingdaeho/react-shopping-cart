@@ -3,6 +3,7 @@ import { Order, Product } from '../../../types';
 import fetcher from '../../../lib/axios';
 import { cartItemQueryOptions } from '../-queryOptions';
 import { useCartStore } from '../../../store/cart';
+import { orderListQueryOptions } from '../../orderList/-queryOptions';
 
 export const useCreateOrder = () => {
   const queryClient = useQueryClient();
@@ -18,7 +19,13 @@ export const useCreateOrder = () => {
       return data;
     },
     onSettled: () => {
-      queryClient.invalidateQueries(cartItemQueryOptions());
+      queryClient.invalidateQueries({
+        queryKey: cartItemQueryOptions().queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: orderListQueryOptions().queryKey,
+        refetchType: 'inactive',
+      });
       resetSelectedItems();
     },
   });

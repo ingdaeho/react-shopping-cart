@@ -29,7 +29,7 @@ export const CartItemList = () => {
       <section className={styles.cartLeftSection}>
         <div className={styles.cartItemCheck}>
           <Checkbox
-            label='선택해제'
+            label={isAllSelected ? '전체선택 해제' : '전체선택'}
             checked={isAllSelected}
             onChange={toggleAllItemsSelection}
           />
