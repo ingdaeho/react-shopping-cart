@@ -20,6 +20,9 @@ dependencies:
   '@vanilla-extract/recipes':
     specifier: ^0.5.2
     version: 0.5.2(@vanilla-extract/css@1.14.1)
+  '@vanilla-extract/sprinkles':
+    specifier: ^1.6.2
+    version: 1.6.2(@vanilla-extract/css@1.14.1)
   axios:
     specifier: ^1.6.8
     version: 1.6.8
@@ -3670,6 +3673,14 @@ packages:
 
   /@vanilla-extract/recipes@0.5.2(@vanilla-extract/css@1.14.1):
     resolution: {integrity: sha512-IcDw3tFOcSJ+DUxL8MIGbg03eyccYb6NBO/rcgp439PDuHxo5GIQefVeGc1L5mIr/lUVPwDc1N5OXTHiGpiz1A==}
+    peerDependencies:
+      '@vanilla-extract/css': ^1.0.0
+    dependencies:
+      '@vanilla-extract/css': 1.14.1
+    dev: false
+
+  /@vanilla-extract/sprinkles@1.6.2(@vanilla-extract/css@1.14.1):
+    resolution: {integrity: sha512-SZdrxzpAFIpRImqY/N54wODYyn6swuz+Lerd7Y1ZX5/148e6J9smpsfBf/iQpmGo17OS9b+AdYBOn7OF9cn/vA==}
     peerDependencies:
       '@vanilla-extract/css': ^1.0.0
     dependencies:
